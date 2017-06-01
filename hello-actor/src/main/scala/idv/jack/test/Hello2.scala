@@ -1,6 +1,6 @@
 package idv.jack.test
 
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.actor.{Actor, ActorSystem, Inbox, Props}
 
 
 object Hello2 {
@@ -18,7 +18,11 @@ object Hello2 {
   def main(args: Array[String]): Unit ={
     val system = ActorSystem("actor-demo-scala")
     val hello = system.actorOf(Props[Hello], "hello")
+
+    val inbox = Inbox.create(system)
     hello ! Greeting("Hello")
+    inbox.send(hello, Greet("JACK"))
+
     hello! Greet("Bob")
     hello ! Greet("Alice")
     hello ! Greeting("Hola")
